@@ -1,0 +1,29 @@
+{
+  "name": "midi-fighter-3d",
+  "homepage": "https://github.com/prateekjadhwani/midi-fighter-3d",
+  "authors": [
+    "Prateek Jadhwani <prateekjadhwani@users.noreply.github.com>"
+  ],
+  "description": "A polymer element for midifighter 3d which can be controlled and viewed on the web with the help of WebMidi API",
+  "main": "midi-fighter-3d.html",
+  "moduleType": [],
+  "keywords": [
+    "midi",
+    "fighter",
+    "3d",
+    "midi",
+    "webmidiapi"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "web-midi": "*"
+  }
+}

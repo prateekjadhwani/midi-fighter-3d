@@ -1,0 +1,184 @@
+<link rel="import" href="../web-midi/web-midi.html">
+
+<dom-module id="midi-fighter-3d">
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+        padding: 20px;
+      }
+      .container {
+        perspective: 800px;
+        perspective-origin: 50% 100px;
+      }
+      .cube {
+        position: relative;
+        width: 200px;
+        transform-style: preserve-3d;
+        transform-origin: center center;
+        transition: transform 0.5s;
+      }
+      .front, .back, .right, .left, .top, .bottom {
+        position: absolute;
+        background:rgba(0,0,0,0.1);
+        border: 1px solid black;
+      }
+      .back {
+        transform: translateZ(-80px) rotateY(180deg);
+      }
+      .right {
+        transform: rotateY(-270deg) translateX(80px) translateZ(120px);
+        transform-origin: top right;
+      }
+      .left {
+        transform: rotateY(270deg) translateX(-80px);
+        transform-origin: center left;
+      }
+      .top {
+        transform: rotateX(-90deg) translateY(-0px);
+        transform-origin: top center;
+      }
+      .bottom {
+        transform: rotateX(90deg) translateY(-40px) translateZ(-160px);
+      }
+      .front {
+        transform: translateZ(0px);
+        background: white;
+      }
+      .top, .bottom{
+        height: 80px;
+        width: 200px;
+      }
+      .right, .left {
+        height: 200px;
+        width: 80px;
+      }
+      .front, .back {
+        height: 200px;
+        width: 200px;
+      }
+      .main-button {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-content: flex-stretch;
+        margin: 0px 15px;
+        height: 90%;
+      }
+      .button {
+        background: rgba(0,0,0,0.5);
+        border-radius: 50%;
+        border: 1px solid rgba(0,0,0,0.7);
+        flex-grow: 1;
+        flex-basis: auto;
+        height: 15%;
+        width: 15%;
+        margin: 5px;
+      }
+      .mode-button {
+        padding: 0 25px;
+      }
+      .upper {
+        border-radius: 0%;
+        background: rgba(0,0,0,0.5);
+        border: 1px solid rgba(0,0,0,0.7);
+        display: inline-block;
+        height: 10px;
+        width: 15%;
+        margin: 2px 5px;
+      }
+      
+    </style>
+    <div class="container">
+      <div class="cube" id="cube">
+        <div class="front">
+          <div class="mode-button">
+            <div class="upper"></div>
+            <div class="upper"></div>
+            <div class="upper"></div>
+            <div class="upper"></div>
+          </div>
+          <div class="main-button">
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+          </div>
+        </div>
+        <div class="back">back</div>
+        <div class="top">top</div>
+        <div class="bottom">bottom</div>
+        <div class="left">left</div>
+        <div class="right">right</div>
+      </div>
+    </div>
+    <web-midi on-change="handleValueChange"></web-midi>
+  </template>
+  <script>
+    Polymer({
+      is: 'midi-fighter-3d',
+      properties: {
+        value: {
+          type: String,
+          value: ''
+        }
+      },
+      ready: function() {
+        
+      },
+      handleValueChange: function(e, detail) {
+        //console.log(detail.value);
+        var value = detail.value.split(' '),
+            mode = value[0],
+            operationKey = parseInt(value[1], 16),
+            operationValue = parseInt(value[2], 16);
+        
+        switch(mode) {
+          case 'b3': 
+              this.handleDirectionChange(operationKey, operationValue);
+              break;
+          case '92': 
+              this.handleKeyPress(operationKey);
+              break;
+          default: 
+              break;
+        }
+      },
+      handleKeyPress: function(key) {
+        console.log(key-35);
+        
+      },
+      handleDirectionChange: function(key, value) {
+        if(value > 90) {
+          value = 90;
+        }
+        switch(key) {
+          case 0:
+            this.transform('rotateY(-' + value + 'deg)', this.$.cube);
+            break;
+          case 1:
+            this.transform('rotateX(' + value + 'deg)', this.$.cube);
+            break;
+          case 2:
+            this.transform('rotateY(' + value + 'deg)', this.$.cube);
+            break;
+          case 3:
+            this.transform('rotateX(-' + value + 'deg)', this.$.cube);
+            break;
+        }
+      }
+    });
+  </script>
+</dom-module>
